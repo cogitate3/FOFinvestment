@@ -1,0 +1,50 @@
+本函数为文件 公募基金二级分类排名筛选20210125.xlsx 中使用的大部分函数
+
+计划选取：
+1、主动型
+2、普通股票型、全部四中混合型
+4、混合债券二级基金
+5、qdii股票
+6、成立时间2年以上
+7、基金经理任职天数大于365*2
+
+
+wind函数：
+基金简称=f_info_name(A2)，成立时间=f_info_setupdate(A2)，最新合并规模亿元=f_netasset_total(A2,参数!B1,100000000)，现任基金经理=f_info_fundmanager(A2)，现任的老的基金经理管理本基金的天数=f_info_manager_onthepostdays(A2,1)，wind的基金分类二级=f_info_investtype(A2)
+
+基金区间收益率排名的百分比：f_nav_periodreturnrankingper(基金代码,起始日,截止日,3=基金投资二级分类)
+最近1年=f_nav_periodreturnrankingper(A2,参数!B2,参数!B1,3)     //应用时的时间要改为绝对应用，只有代码用相对引用
+最近2年=f_nav_periodreturnrankingper(A2,参数!B3,参数!B2,3)
+最近3年=f_nav_periodreturnrankingper(A2,参数!B4,参数!B3,3)
+最近4年=f_nav_periodreturnrankingper(A2,参数!B5,参数!B4,3)
+最近5年=f_nav_periodreturnrankingper(A2,参数!B6,参数!B5,3)
+最近6年=f_nav_periodreturnrankingper(A2,参数!B7,参数!B6,3)
+最近7年=f_nav_periodreturnrankingper(A2,参数!B8,参数!B7,3)
+
+基金复权单位净值区间增长率：=f_nav_adjustedreturn(基金代码,起始日,截止日)
+最近1年=f_nav_adjustedreturn(A2,参数!B2,参数!B1)     //应用时的时间要改为绝对应用
+最近2年=f_nav_adjustedreturn(A2,参数!B3,参数!B2)
+最近3年=f_nav_adjustedreturn(A2,参数!B4,参数!B3)
+最近4年=f_nav_adjustedreturn(A2,参数!B5,参数!B4)
+最近5年=f_nav_adjustedreturn(A2,参数!B6,参数!B5)
+最近6年=f_nav_adjustedreturn(A2,参数!B7,参数!B6)
+最近7年=f_nav_adjustedreturn(A2,参数!B8,参数!B7)
+
+区间回报=f_return(基金代码,1=年化\0=不年化,起始日,截止日)
+最近0.5年年化回报=f_return(A2,1，参数!B1-365/2,参数!B1)     //应用时的时间要改为绝对应用
+最近3年年化回报=f_return(A2,1，参数!B4,参数!B1)
+最近5年年化回报=f_return(A2,1，参数!B6,参数!B1)
+
+
+区间回报，最近1周=f_return_1w(基金代码,1=年化\0=不年化,评估日)
+最近1周=f_return_1w(A2,0,参数!B1)
+最近1个月=f_return_1m(A2,0,参数!B1)
+最近3个月=f_return_3m(A2,0,参数!B1)
+最近6个月=f_return_6m(A2,0,参数!B1)
+
+区间最大回撤=f_risk_maxdownside(基金代码,起始日，终止日)
+近5年内最大回撤日期=f_risk_maxdownside_date(基金代码,起始日，终止日)
+近5年最大回撤=f_risk_maxdownside(A2,参数!$B$6,参数!$B$1)
+近3年最大回撤=f_risk_maxdownside(A2,参数!$B$4,参数!$B$1)
+近5年内最大回撤日期=f_risk_maxdownside_date(A2,参数!$B$6,参数!$B$1)
+

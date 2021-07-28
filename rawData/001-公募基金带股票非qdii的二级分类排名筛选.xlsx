@@ -1,0 +1,333 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.3-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "python3",
+   "display_name": "Python 3",
+   "language": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd \n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df0 = pd.read_excel(r\"d:\\数据-需备份\\百度云\\余铮研究\\新研究201905起\\FOF投资\\001-公募基金二级分类排名筛选-带函数-快照.xlsx\")\n",
+    "df0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df0.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df0.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df0.index"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df0.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = df0\n",
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 按单列的值做筛选\n",
+    "df[df['前第一年(%)'] < 0] "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 按多个列的值做筛选，一定记得要用小括号改变运算优先级\n",
+    "df1 = df[(df['前第一年排名'] <= 50) & (df['前第二年排名'] <= 50) & (df['前第三年排名'] <= 50) & (df['前第四年排名'] <= 50) & (df['前第五年排名'] <= 50) & (df['成立天数'] > 1825)] \n",
+    "df1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df1.sort_values(by='前第一年排名', ascending=False,)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df1[[\"基金二级分类\"]]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 按多个列排序\n",
+    "df1.sort_values(by=['基金二级分类', '近6个月\\n年化', '前第一年排名', ], ascending=False, inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df1.groupby(['基金二级分类']).describe() "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df1[['近6个月\\n年化','近3年\\n年化','近5年\\n年化']].describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df2 = df1[['基金二级分类', '近6个月\\n年化','近3年\\n年化','近5年\\n年化']]\n",
+    "df2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df2.groupby('基金二级分类').describe() "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "metadata": {},
+   "outputs": [
+    {
+     "output_type": "execute_result",
+     "data": {
+      "text/plain": [
+       "            近6个月\\n年化    近3年\\n年化    近5年\\n年化\n",
+       "基金二级分类                                    \n",
+       "偏债混合型基金    23.883228  11.494798  12.671692\n",
+       "偏股混合型基金    98.344398  33.954612  29.922285\n",
+       "平衡混合型基金    46.963231  26.098767  22.174483\n",
+       "普通股票型基金    95.668534  34.701718  31.247337\n",
+       "混合债券型二级基金  22.913088  10.642696   8.455676\n",
+       "灵活配置型基金    71.891942  33.717730  25.106903"
+      ],
+      "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>近6个月\\n年化</th>\n      <th>近3年\\n年化</th>\n      <th>近5年\\n年化</th>\n    </tr>\n    <tr>\n      <th>基金二级分类</th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>偏债混合型基金</th>\n      <td>23.883228</td>\n      <td>11.494798</td>\n      <td>12.671692</td>\n    </tr>\n    <tr>\n      <th>偏股混合型基金</th>\n      <td>98.344398</td>\n      <td>33.954612</td>\n      <td>29.922285</td>\n    </tr>\n    <tr>\n      <th>平衡混合型基金</th>\n      <td>46.963231</td>\n      <td>26.098767</td>\n      <td>22.174483</td>\n    </tr>\n    <tr>\n      <th>普通股票型基金</th>\n      <td>95.668534</td>\n      <td>34.701718</td>\n      <td>31.247337</td>\n    </tr>\n    <tr>\n      <th>混合债券型二级基金</th>\n      <td>22.913088</td>\n      <td>10.642696</td>\n      <td>8.455676</td>\n    </tr>\n    <tr>\n      <th>灵活配置型基金</th>\n      <td>71.891942</td>\n      <td>33.717730</td>\n      <td>25.106903</td>\n    </tr>\n  </tbody>\n</table>\n</div>"
+     },
+     "metadata": {},
+     "execution_count": 70
+    }
+   ],
+   "source": [
+    "df2.groupby('基金二级分类').mean()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "metadata": {},
+   "outputs": [
+    {
+     "output_type": "execute_result",
+     "data": {
+      "text/plain": [
+       "            近6个月\\n年化    近3年\\n年化    近5年\\n年化\n",
+       "基金二级分类                                    \n",
+       "偏债混合型基金    23.883228  11.494798  12.671692\n",
+       "偏股混合型基金    95.556021  32.674062  28.932554\n",
+       "平衡混合型基金    47.670443  26.341409  19.234064\n",
+       "普通股票型基金    91.830550  35.264206  31.076714\n",
+       "混合债券型二级基金  19.760410   9.072423   8.033486\n",
+       "灵活配置型基金    69.856288  34.661037  25.730074"
+      ],
+      "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>近6个月\\n年化</th>\n      <th>近3年\\n年化</th>\n      <th>近5年\\n年化</th>\n    </tr>\n    <tr>\n      <th>基金二级分类</th>\n      <th></th>\n      <th></th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>偏债混合型基金</th>\n      <td>23.883228</td>\n      <td>11.494798</td>\n      <td>12.671692</td>\n    </tr>\n    <tr>\n      <th>偏股混合型基金</th>\n      <td>95.556021</td>\n      <td>32.674062</td>\n      <td>28.932554</td>\n    </tr>\n    <tr>\n      <th>平衡混合型基金</th>\n      <td>47.670443</td>\n      <td>26.341409</td>\n      <td>19.234064</td>\n    </tr>\n    <tr>\n      <th>普通股票型基金</th>\n      <td>91.830550</td>\n      <td>35.264206</td>\n      <td>31.076714</td>\n    </tr>\n    <tr>\n      <th>混合债券型二级基金</th>\n      <td>19.760410</td>\n      <td>9.072423</td>\n      <td>8.033486</td>\n    </tr>\n    <tr>\n      <th>灵活配置型基金</th>\n      <td>69.856288</td>\n      <td>34.661037</td>\n      <td>25.730074</td>\n    </tr>\n  </tbody>\n</table>\n</div>"
+     },
+     "metadata": {},
+     "execution_count": 71
+    }
+   ],
+   "source": [
+    "df2.groupby('基金二级分类').median()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {},
+   "outputs": [
+    {
+     "output_type": "execute_result",
+     "data": {
+      "text/plain": [
+       "          近6个月\\n年化\n",
+       "count  1012.000000\n",
+       "mean     85.891589\n",
+       "std      42.529229\n",
+       "min       3.336746\n",
+       "25%      60.284719\n",
+       "50%      84.239638\n",
+       "75%     107.829606\n",
+       "max     342.532743"
+      ],
+      "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>近6个月\\n年化</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>count</th>\n      <td>1012.000000</td>\n    </tr>\n    <tr>\n      <th>mean</th>\n      <td>85.891589</td>\n    </tr>\n    <tr>\n      <th>std</th>\n      <td>42.529229</td>\n    </tr>\n    <tr>\n      <th>min</th>\n      <td>3.336746</td>\n    </tr>\n    <tr>\n      <th>25%</th>\n      <td>60.284719</td>\n    </tr>\n    <tr>\n      <th>50%</th>\n      <td>84.239638</td>\n    </tr>\n    <tr>\n      <th>75%</th>\n      <td>107.829606</td>\n    </tr>\n    <tr>\n      <th>max</th>\n      <td>342.532743</td>\n    </tr>\n  </tbody>\n</table>\n</div>"
+     },
+     "metadata": {},
+     "execution_count": 80
+    }
+   ],
+   "source": [
+    "df30 = df[(df['前第一年排名'] <= 30) & (df['成立天数'] > 365)] \n",
+    "df30 = df30[['基金二级分类','近6个月\\n年化']]\n",
+    "df30.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 85,
+   "metadata": {},
+   "outputs": [
+    {
+     "output_type": "execute_result",
+     "data": {
+      "text/plain": [
+       "            前第一年排名       前第二年排名\n",
+       "count  2136.000000  2136.000000\n",
+       "mean     63.814128    47.781579\n",
+       "std      20.202261    31.807272\n",
+       "min      30.029441     0.000000\n",
+       "25%      45.979538    19.345838\n",
+       "50%      63.101342    50.758921\n",
+       "75%      81.134101    75.197974\n",
+       "max     100.000000   100.000000"
+      ],
+      "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>前第一年排名</th>\n      <th>前第二年排名</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>count</th>\n      <td>2136.000000</td>\n      <td>2136.000000</td>\n    </tr>\n    <tr>\n      <th>mean</th>\n      <td>63.814128</td>\n      <td>47.781579</td>\n    </tr>\n    <tr>\n      <th>std</th>\n      <td>20.202261</td>\n      <td>31.807272</td>\n    </tr>\n    <tr>\n      <th>min</th>\n      <td>30.029441</td>\n      <td>0.000000</td>\n    </tr>\n    <tr>\n      <th>25%</th>\n      <td>45.979538</td>\n      <td>19.345838</td>\n    </tr>\n    <tr>\n      <th>50%</th>\n      <td>63.101342</td>\n      <td>50.758921</td>\n    </tr>\n    <tr>\n      <th>75%</th>\n      <td>81.134101</td>\n      <td>75.197974</td>\n    </tr>\n    <tr>\n      <th>max</th>\n      <td>100.000000</td>\n      <td>100.000000</td>\n    </tr>\n  </tbody>\n</table>\n</div>"
+     },
+     "metadata": {},
+     "execution_count": 85
+    }
+   ],
+   "source": [
+    "df70 = df[(df['前第一年排名'] > 30) & (df['成立天数'] > 365)] \n",
+    "df70[[\"前第一年排名\", \"前第二年排名\"]].describe()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {},
+   "outputs": [
+    {
+     "output_type": "execute_result",
+     "data": {
+      "text/plain": [
+       "前第一年排名    63.814128\n",
+       "前第二年排名    47.781579\n",
+       "dtype: float64"
+      ]
+     },
+     "metadata": {},
+     "execution_count": 86
+    }
+   ],
+   "source": [
+    "df70[[\"前第一年排名\", \"前第二年排名\"]].mean()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ]
+}
